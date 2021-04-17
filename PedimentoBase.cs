@@ -22,16 +22,31 @@ namespace CIF_VALOR_MERCANCIA
         private string sTipoDocumento { get; set; }
         private string sOperacionAduanera { get; set; }
         private decimal ValorMercancia { get; set; }
+        /// <summary>
+        /// Al construir el Pedimento base, buscamos su tipo de operacion aduanera
+        /// apoyandonos de las clases Utils y CRP.
+        /// En función de su Tipo de operación, el main decide que decorador va a utilizar
+        /// </summary>
+        /// <param name="Patente"></param>
+        /// <param name="NumeroPedimento"></param>
         public PedimentoBase(string Patente, string NumeroPedimento)
         {
+           
             IOUtils oUtilidades = new IOUtils();
+            CRP oCRP;
+            oCRP = new CRP(oUtilidades.GetPattern(Patente,NumeroPedimento));
+           // oCRP.setCopia(); //Aqui estoy repitiendo lo que viene en la linea anterior!!!
             oUtilidades.FormatearPatente(Patente);
             this.sPatente = oUtilidades.FormatearPatente(Patente);
             this.sNumeroPedimento = NumeroPedimento;
+
+            this.sOperacionAduanera = ""; //Aqui seteamos la operación aduanera en funcion de los parametros
+                                         //patente y pedimento
             //CRP oCRP = new CRP(oUtilidades.GetPattern(this.sPatente,this.sNumeroPedimento));
         }
         public string GetOperacionAduanera()
         {
+            //return this.OperacionAduanera; validar si es viable
             return "IMPORTACION";
         }
 
