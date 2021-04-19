@@ -16,60 +16,58 @@ namespace CIF_VALOR_MERCANCIA
         /// Valor Mercancia = Valor Aduana
         /// </summary>
         /// <returns></returns>
-
-        private string sPatente { get; set; }
-        private string sNumeroPedimento { get; set; }
-        private string sTipoDocumento { get; set; }
-        private string sOperacionAduanera { get; set; }
-        private decimal ValorMercancia { get; set; }
+        private string sPatente;
+        private string sNumeroPedimento;
+        private string sTipoDocumento;
+        private string sOperacionAduanera;
+        private decimal nValorMercancia;
         /// <summary>
-        /// Al construir el Pedimento base, buscamos su tipo de operacion aduanera
-        /// apoyandonos de las clases Utils y CRP.
-        /// En función de su Tipo de operación, el main decide que decorador va a utilizar
+        /// Constructor PedimentoBase
         /// </summary>
-        /// <param name="Patente"></param>
-        /// <param name="NumeroPedimento"></param>
-        public PedimentoBase(string Patente, string NumeroPedimento)
+        /// <returns></returns>
+        public PedimentoBase()
         {
-           
-            IOUtils oUtilidades = new IOUtils();
-            CRP oCRP;
-            oCRP = new CRP(oUtilidades.GetPattern(Patente,NumeroPedimento));
-           // oCRP.setCopia(); //Aqui estoy repitiendo lo que viene en la linea anterior!!!
-            oUtilidades.FormatearPatente(Patente);
-            this.sPatente = oUtilidades.FormatearPatente(Patente);
-            this.sNumeroPedimento = NumeroPedimento;
-
-            this.sOperacionAduanera = ""; //Aqui seteamos la operación aduanera en funcion de los parametros
-                                         //patente y pedimento
-            //CRP oCRP = new CRP(oUtilidades.GetPattern(this.sPatente,this.sNumeroPedimento));
+            this.nValorMercancia = 0 ;
+        }
+        public void SetTipoDocumento(string tipoDocumento)
+        {
+            this.sTipoDocumento = tipoDocumento;
+        }
+        public string GetTipoDocumento()
+        {
+            return this.sTipoDocumento;
+        }
+        public void SetOperacionAduanera(string operacionAduanera)
+        {
+            this.sOperacionAduanera = operacionAduanera;
         }
         public string GetOperacionAduanera()
         {
-            //return this.OperacionAduanera; validar si es viable
-            return "IMPORTACION";
+            return this.sOperacionAduanera;
         }
-
-        public string GetTipoDocumento()
+        public void SetPatente(string patente)
         {
-            return "NORMAL";
-        }
-        /// <summary>
-        /// Se inicializa en 0 para comodidad.
-        /// </summary>
-        /// <returns></returns>
-        public decimal GetValorMercancia()
-        {
-            return 0;
+            this.sPatente = patente;
         }
         public string GetPatente()
         {
             return this.sPatente;
         }
+        public void SetPedimento(string pedimento)
+        {
+            this.sNumeroPedimento = pedimento;
+        }
         public string GetPedimento()
         {
             return this.sNumeroPedimento;
         }
-
+        public void SetValorMercancia(decimal valorMercancia)
+        {
+            this.nValorMercancia = valorMercancia;
+        }
+        public decimal GetValorMercancia()
+        {
+            return this.nValorMercancia;
+        }
     }
 }

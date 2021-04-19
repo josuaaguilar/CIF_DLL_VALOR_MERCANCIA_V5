@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIF_VALOR_MERCANCIA", "CIF_VALOR_MERCANCIA.csproj", "{6AC320B4-3234-4123-8AFF-B65DA3B448AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValorMercaciaV5", "..\ValorMercaciaV5\ValorMercaciaV5.csproj", "{79501BEB-4702-40F4-BC21-E92A4B8DA80C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6AC320B4-3234-4123-8AFF-B65DA3B448AA} = {6AC320B4-3234-4123-8AFF-B65DA3B448AA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

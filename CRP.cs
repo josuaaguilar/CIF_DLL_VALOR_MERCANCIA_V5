@@ -15,30 +15,35 @@ namespace CIF_VALOR_MERCANCIA
     {
          //Sigleton ? para evitar construir una instancia nueva;
         private string sRutaBase = Settings.Default.sRutaBase;
-        private string sCopia { get; set; }
-        private string sRutaCompleta { get; set; }
-        private string sPattern { get; set; }
-
-        public CRP(string pattern)
+        private string sCopia;
+        private string sRutaCompleta;
+        private string sPattern;
+        public CRP() { }
+        public void SetPattern(string patente, string numeroPedimento)
         {
-            //Pasar el patron?
-            this.sPattern = pattern;
-
+            this.sPattern = patente + "-" + numeroPedimento+"-430.txt";
         }
-        public void setCopia(string patron)
+        public string GetPattern()
+        {
+            return this.sPattern;
+        }
+        public void SetCopia()
         {
             IOUtils oUtilidades = new IOUtils();
-
             this.sCopia = oUtilidades.CopyFrom(this.sRutaCompleta);
         }
-        public void setRutaCompleta()
+        public void SetRutaCompleta(string pattern)
         {
             IOUtils oUtilidades = new IOUtils();
-            this.sRutaCompleta = oUtilidades.CombinePaths(this.sRutaBase,this.sPattern);
+            this.sRutaCompleta = oUtilidades.PathCombine(this.sRutaBase, pattern);
         }
         public string GetCopia()
         {
             return this.sCopia;
+        }
+        public string GetRutaBase()
+        {
+            return this.sRutaBase;
         }
     }
 }

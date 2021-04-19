@@ -45,7 +45,6 @@
     <Compile Include="IPedimento.cs" />
     <Compile Include="PedimentoBase.cs" />
     <Compile Include="PedimentoDecorador.cs" />
-    <Compile Include="PedimentoImportacion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

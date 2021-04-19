@@ -12,40 +12,59 @@ namespace CIF_VALOR_MERCANCIA
     /// Esta clase utiliza System.IO para acceder a la información
     /// manifestada en el archivos .txt
     /// </summary>
-    class IOUtils
+    public class IOUtils
     {
-        
         StreamReader oReader;
-        StringReader sReader;
-        
+        StringReader srReader;
+        Encoding nCodificacion;
+        Boolean bEncontrado;
+        string sRenglon, sResult;
+        string[] aCamposRenglon;
+        char[] aSeparador;
+        decimal nValorMercancia;
         public IOUtils()
         {
-
+            this.bEncontrado = false;
+            this.sResult = "";
+            this.aSeparador = new char[1];
+            this.nCodificacion = Encoding.Default;
         }
-        public string GetTag(string sCRP, string tag,char[] separador,int posicion)
+        public string GetTag(string crp, string tag,char separador,int posicion)
         {
-            //Validar con exportación! 
-            Boolean bEncontrado;
-            bEncontrado = false;
-            sReader = new StringReader(sCRP);
-            string sRenglon, sResult="";
-            sRenglon = sReader.ReadLine();
-            string[] sCamposRenglon;
-            while(!bEncontrado && sRenglon != null)
+            //Validar con exportación! -> ok
+            this.bEncontrado = false;
+            //Agregar un try catch para ArgumentNullException
+            try
             {
-                if (sRenglon.Contains(tag))
+                this.srReader = new StringReader(crp);
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
+            this.sRenglon = this.srReader.ReadLine();
+            this.aSeparador[0] = separador;
+            while(!this.bEncontrado && this.sRenglon != null)
+            {
+                if (this.sRenglon.Contains(tag))
                 {
-                    bEncontrado = true;
-                    sCamposRenglon = sRenglon.Split(separador);
-                    sResult = sCamposRenglon[posicion];
+                    this.bEncontrado = true;
+                    this.aCamposRenglon = this.sRenglon.Split(this.aSeparador);
+                    this.sResult = this.aCamposRenglon[posicion];
                 }
                 else
                 {
-                    sRenglon = sReader.ReadLine();
+                    this.sRenglon = this.srReader.ReadLine();
                 }
             }
-            return sResult;
+            return this.sResult.Trim();
         }
+        /// <summary>
+        /// Validar si es necesario implementar el formateo
+        /// </summary>
+        /// <param name="patente"></param>
+        /// <returns></returns>
         public string FormatearPatente(string patente)
         {
             //meter a un ciclo while hasta que patente.length == 4
@@ -60,22 +79,28 @@ namespace CIF_VALOR_MERCANCIA
             }
             return patente;
         }
-        public Boolean Exist(string sRutaBse)
+        public Boolean Exist(string rutaBse)
         {
-            return Directory.Exists(sRutaBse);
+            return Directory.Exists(rutaBse);
         }
-        public string GetPattern(string patente, string numeroPedimento)
-        {
-            return patente + "-" + numeroPedimento + "*";
-        }
-        public string CombinePaths(string rutaBase, string pattern)
+        public string PathCombine(string rutaBase, string pattern)
         {
             return Path.Combine(rutaBase, pattern);
         }
-        public string CopyFrom(string sRutaCompleta)
+        public string CopyFrom(string rutaCompleta)
         {
-            oReader = new StreamReader(sRutaCompleta);
-            return oReader.ReadToEnd();
+            this.oReader = new StreamReader(rutaCompleta, nCodificacion);
+            return this.oReader.ReadToEnd();
+        }
+        public decimal TryParse(string valorMercancia)
+        {
+            decimal.TryParse(valorMercancia,out nValorMercancia);
+            return nValorMercancia;
+        }
+        //Metodo que obtiene todos los CRPs en la ruta base
+        public string[] GetAllCRPs(string rutaBase)
+        {
+            return Directory.GetFiles(rutaBase);
         }
     }
 }
