@@ -13,8 +13,8 @@ namespace CIF_VALOR_MERCANCIA
     /// </summary>
     public class CRP
     {
-         //Sigleton ? para evitar construir una instancia nueva;
-        private string sRutaBase = Settings.Default.sRutaBase;
+        //Sigleton ? para evitar construir una instancia nueva;
+        private string sRutaBase;
         private string sCopia;
         private string sRutaCompleta;
         private string sPattern;
@@ -27,23 +27,40 @@ namespace CIF_VALOR_MERCANCIA
         {
             return this.sPattern;
         }
-        public void SetCopia()
+
+        public void SetCopia(string CRP)
         {
-            IOUtils oUtilidades = new IOUtils();
-            this.sCopia = oUtilidades.CopyFrom(this.sRutaCompleta);
+            this.sCopia = CRP;
+        }
+        public string GetCopia()
+        {
+            return this.sCopia;
+        }
+        public void SetRutaCompleta(string rutaBase, string pattern)
+        {
+            IOUtils oUtils = new IOUtils();
+            this.sRutaCompleta = oUtils.PathCombine(rutaBase, pattern);
         }
         public void SetRutaCompleta(string pattern)
         {
             IOUtils oUtilidades = new IOUtils();
             this.sRutaCompleta = oUtilidades.PathCombine(this.sRutaBase, pattern);
         }
-        public string GetCopia()
+        public string GetRutaCompleta()
         {
-            return this.sCopia;
+            return this.sRutaCompleta;
         }
         public string GetRutaBase()
         {
             return this.sRutaBase;
+        }
+        public void SetRutaBase(string rutaBase)
+        {
+            this.sRutaBase = rutaBase;
+        }
+        public void SetRutaBase()
+        {
+            this.sRutaBase = Settings.Default.sRutaBase;
         }
     }
 }

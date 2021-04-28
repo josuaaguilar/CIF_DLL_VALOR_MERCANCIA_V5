@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using CIF_VALOR_MERCANCIA.Properties;
 
+
 namespace CIF_VALOR_MERCANCIA
 {
     /// <summary>
@@ -19,15 +20,117 @@ namespace CIF_VALOR_MERCANCIA
         Encoding nCodificacion;
         Boolean bEncontrado;
         string sRenglon, sResult;
+        string sTagTipoDocumento = Settings.Default.sTagTipoDocumento;
+        int nPosicionTipoDocumento = Settings.Default.nPosicionTagTipoDocumento;
+        string sTagTipoOperacionAduanera = Settings.Default.sTagTipoOperacionAduanera;
+        int nPosicionTipoOperacionAduanera = Settings.Default.nPosicionTagTipoOperacionAduanera;
+        string sTagValorAduana = Settings.Default.sTagValorAduana;
+        int nPosicionValorAduana = Settings.Default.nPosicionTagValorAduana;
+        string sTagValorComercial = Settings.Default.sTagValorComercial;
+        int nPosicionComercial = Settings.Default.nPosicionTagValorComercial;
+        int nValorMercanciaPrevioDeConso = Settings.Default.nValorMercanciaPrevioDeConso;
         string[] aCamposRenglon;
-        char[] aSeparador;
+        char[] aSeparador = {Settings.Default.cSeparadorDosPuntos,' '};
         decimal nValorMercancia;
+        private Pedimento oPedimento;
+        private CRP oCRP;
+        List<Pedimento> LPedimentos;
         public IOUtils()
         {
             this.bEncontrado = false;
             this.sResult = "";
-            this.aSeparador = new char[1];
+            //this.aSeparador = new char[1];
             this.nCodificacion = Encoding.Default;
+            LPedimentos = new List<Pedimento>();
+        }
+        public List<Pedimento> SetPedimento(string patente, string numeroPedimento)
+        {
+            oPedimento = new Pedimento();
+            oPedimento.SetPatente(patente);
+            oPedimento.SetPedimento(numeroPedimento);
+            oCRP = new CRP();
+            oCRP.SetRutaBase();
+            oCRP.SetPattern(oPedimento.GetPatente(), oPedimento.GetPedimento());
+            oCRP.SetRutaCompleta(oCRP.GetPattern());
+            oCRP.SetCopia(CopyFrom(oCRP.GetRutaCompleta()));
+            oPedimento.SetTipoDocumento(GetTag(oCRP.GetCopia(), sTagTipoDocumento, aSeparador[0], nPosicionTipoDocumento));
+            oPedimento.SetOperacionAduanera(GetTag(oCRP.GetCopia(), sTagTipoOperacionAduanera, aSeparador[0], nPosicionTipoOperacionAduanera));
+            if (oPedimento.GetTipoDocumento().Equals("NORMAL"))
+            {
+                if (oPedimento.GetOperacionAduanera().Equals("IMPORTACIÓN"))
+                {
+                    oPedimento.SetValorMercancia(DecimalTryParse(GetTag(oCRP.GetCopia(), sTagValorAduana, aSeparador[0], nPosicionValorAduana)));
+
+                }
+                else
+                {
+                    oPedimento.SetValorMercancia(DecimalTryParse(GetTag(oCRP.GetCopia(), sTagValorComercial, aSeparador[1], nPosicionComercial)));
+                }
+            }
+            else // Previo de consolidado
+            {
+                oPedimento.SetValorMercancia(nValorMercanciaPrevioDeConso);
+            }
+            LPedimentos.Add(oPedimento);
+            return LPedimentos;
+
+        }
+        public Pedimento[] GetPedimentos(string patente, string numeroPedimento)
+        {
+            bEncontrado = false;
+            Pedimento[] aPedimentos=null;
+            //oPedimento = new Pedimento();
+            oCRP = new CRP();
+            oCRP.SetRutaBase();
+            oCRP.SetPattern(patente,numeroPedimento);
+            string[] aRutas = GetRutas(oCRP.GetRutaBase(), oCRP.GetPattern());
+            string[] aCRP = new string[aRutas.Length];
+            aPedimentos = new Pedimento[aRutas.Length];
+            for (int i=0;i<aRutas.Length;i++)
+            {
+                oPedimento = new Pedimento();
+                oPedimento.SetPatente(patente);
+                oPedimento.SetPedimento(numeroPedimento);
+                aCRP[i] = CopyFrom(aRutas[i]);
+                oCRP.SetCopia(aCRP[i]);
+                oPedimento.SetTipoDocumento(GetTag(oCRP.GetCopia(),"Tipo Doc",':',1));
+                oPedimento.SetOperacionAduanera(GetTag(oCRP.GetCopia(), "Tipo de ope", ':', 2));
+                if (oPedimento.GetTipoDocumento().Equals("NORMAL"))
+                {
+                    if (oPedimento.GetOperacionAduanera().Equals("IMPORTACIÓN"))
+                    {
+                        oPedimento.SetValorMercancia(DecimalTryParse(GetTag(oCRP.GetCopia(),"Valor Aduana",' ',3)));
+                        
+                    }
+                    else // Exportacion
+                    {
+                        oPedimento.SetValorMercancia(DecimalTryParse(GetTag(oCRP.GetCopia(), "Valor comercial", ' ', 25)));
+                    }
+                }
+                else //Previo de consolidado
+                {
+                    oPedimento.SetValorMercancia(1);
+                }
+                //Termina if Normal
+                aPedimentos[i] = oPedimento;
+            }
+            return aPedimentos;
+        }
+        /// <summary>
+        /// Metodo que busca un patter en la ruta base
+        /// incluidos todos los sub-directorios
+        /// </summary>
+        /// <param name="rutaBase"></param>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public string[] GetRutas(string rutaBase,string pattern)
+        {
+            return Directory.GetFiles(rutaBase,pattern,SearchOption.AllDirectories);
+        }
+        public decimal DecimalTryParse(string valorMercancia)
+        {
+            decimal.TryParse(valorMercancia, out decimal nValorMercancia);
+            return nValorMercancia;
         }
         public string GetTag(string crp, string tag,char separador,int posicion)
         {
@@ -92,11 +195,23 @@ namespace CIF_VALOR_MERCANCIA
             this.oReader = new StreamReader(rutaCompleta, nCodificacion);
             return this.oReader.ReadToEnd();
         }
+        //Redefinir como boolean 
+        public Boolean isValid(string valorMercancia)
+        {
+            
+            return decimal.TryParse(valorMercancia, out nValorMercancia);
+        }
         public decimal TryParse(string valorMercancia)
         {
             decimal.TryParse(valorMercancia,out nValorMercancia);
             return nValorMercancia;
         }
+        
+        public void BenchmarkGetAllCRPs()
+        {
+            _ = GetAllCRPs(@"C:\Users\jaguilar\Documents\CRPs");
+        }
+
         //Metodo que obtiene todos los CRPs en la ruta base
         public string[] GetAllCRPs(string rutaBase)
         {

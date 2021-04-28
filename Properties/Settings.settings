@@ -5,5 +5,38 @@
     <Setting Name="sRutaBase" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\Users\jaguilar\Documents\CRPs\</Value>
     </Setting>
+    <Setting Name="sTagTipoDocumento" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Tipo Doc.</Value>
+    </Setting>
+    <Setting Name="sTagTipoOperacionAduanera" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Tipo de operación</Value>
+    </Setting>
+    <Setting Name="sTagValorAduana" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Valor Aduana</Value>
+    </Setting>
+    <Setting Name="sTagValorComercial" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Valor comercial</Value>
+    </Setting>
+    <Setting Name="nPosicionTagTipoDocumento" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="nPosicionTagTipoOperacionAduanera" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="nPosicionTagValorAduana" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="nPosicionTagValorComercial" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">25</Value>
+    </Setting>
+    <Setting Name="cSeparadorDosPuntos" Type="System.Char" Scope="Application">
+      <Value Profile="(Default)">:</Value>
+    </Setting>
+    <Setting Name="nValorMercanciaPrevioDeConso" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="cSeparadorEspacioEnBlanco" Type="System.Char" Scope="Application">
+      <Value Profile="(Default)"> </Value>
+    </Setting>
   </Settings>
 </SettingsFile>

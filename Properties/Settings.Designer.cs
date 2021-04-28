@@ -31,5 +31,103 @@ namespace CIF_VALOR_MERCANCIA.Properties {
                 return ((string)(this["sRutaBase"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Tipo Doc.")]
+        public string sTagTipoDocumento {
+            get {
+                return ((string)(this["sTagTipoDocumento"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Tipo de operación")]
+        public string sTagTipoOperacionAduanera {
+            get {
+                return ((string)(this["sTagTipoOperacionAduanera"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Valor Aduana")]
+        public string sTagValorAduana {
+            get {
+                return ((string)(this["sTagValorAduana"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Valor comercial")]
+        public string sTagValorComercial {
+            get {
+                return ((string)(this["sTagValorComercial"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int nPosicionTagTipoDocumento {
+            get {
+                return ((int)(this["nPosicionTagTipoDocumento"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int nPosicionTagTipoOperacionAduanera {
+            get {
+                return ((int)(this["nPosicionTagTipoOperacionAduanera"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int nPosicionTagValorAduana {
+            get {
+                return ((int)(this["nPosicionTagValorAduana"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        public int nPosicionTagValorComercial {
+            get {
+                return ((int)(this["nPosicionTagValorComercial"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(":")]
+        public char cSeparadorDosPuntos {
+            get {
+                return ((char)(this["cSeparadorDosPuntos"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int nValorMercanciaPrevioDeConso {
+            get {
+                return ((int)(this["nValorMercanciaPrevioDeConso"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public char cSeparadorEspacioEnBlanco {
+            get {
+                return ((char)(this["cSeparadorEspacioEnBlanco"]));
+            }
+        }
     }
 }
